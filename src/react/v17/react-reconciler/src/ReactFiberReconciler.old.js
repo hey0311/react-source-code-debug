@@ -247,6 +247,7 @@ export function createContainer(
   return createFiberRoot(containerInfo, tag, hydrate, hydrationCallbacks);
 }
 
+// SECTION updateContainer
 export function updateContainer(
   element: ReactNodeList,
   container: OpaqueRoot,
@@ -257,6 +258,7 @@ export function updateContainer(
     onScheduleRoot(container, element);
   }
   const current = container.current;
+  // ANCHOR 这个 requestEventTime是用做什么?
   const eventTime = requestEventTime();
   if (__DEV__) {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
@@ -265,13 +267,14 @@ export function updateContainer(
       warnIfNotScopedWithMatchingAct(current);
     }
   }
+  // ANCHOR 获取lane优先级 requestUpdateLane
   const lane = requestUpdateLane(current);
 
   if (enableSchedulingProfiler) {
-    markRenderScheduled(lane);
+    markRenderScheduled(lane);// ANCHOR 这里做什么?
   }
 
-  const context = getContextForSubtree(parentComponent);
+  const context = getContextForSubtree(parentComponent);// ANCHOR 获取上下文
   if (container.context === null) {
     container.context = context;
   } else {
@@ -294,7 +297,7 @@ export function updateContainer(
       );
     }
   }
-
+  //ANCHOR createUpdate创建update对象
   const update = createUpdate(eventTime, lane);
   // Caution: React DevTools currently depends on this property
   // being called "element".
@@ -314,11 +317,12 @@ export function updateContainer(
     update.callback = callback;
   }
 
-  enqueueUpdate(current, update);
-  scheduleUpdateOnFiber(current, lane, eventTime);
+  enqueueUpdate(current, update);//ANCHOR enqueueUpdate
+  scheduleUpdateOnFiber(current, lane, eventTime);//ANCHOR scheduleUpdateOnFiber
 
   return lane;
 }
+//!SECTION
 
 export {
   batchedEventUpdates,

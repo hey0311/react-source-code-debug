@@ -192,6 +192,7 @@ export function applyDerivedStateFromProps(
 
 const classComponentUpdater = {
   isMounted,
+  //SECTION enqueueSetState
   enqueueSetState(inst, payload, callback) {
     const fiber = getInstance(inst);
     const eventTime = requestEventTime();
@@ -205,8 +206,9 @@ const classComponentUpdater = {
       }
       update.callback = callback;
     }
-
+    //ANCHOR 调用enqueueUpdate将update放入updateQueue
     enqueueUpdate(fiber, update);
+    //ANCHOR 开始调度
     scheduleUpdateOnFiber(fiber, lane, eventTime);
 
     if (__DEV__) {
@@ -222,6 +224,7 @@ const classComponentUpdater = {
       markStateUpdateScheduled(fiber, lane);
     }
   },
+  //!SECTION
   enqueueReplaceState(inst, payload, callback) {
     const fiber = getInstance(inst);
     const eventTime = requestEventTime();

@@ -171,7 +171,7 @@ function warnOnInvalidCallback(callback: mixed, callerName: string): void {
     }
   }
 }
-
+// SECTION legacyRenderSubtreeIntoContainer
 function legacyRenderSubtreeIntoContainer(
   parentComponent: ?React$Component<any, any>,
   children: ReactNodeList,
@@ -189,12 +189,15 @@ function legacyRenderSubtreeIntoContainer(
   let root: RootType = (container._reactRootContainer: any);
   let fiberRoot;
   if (!root) {
+    // ANCHOR 如果没有root,会新创建一个
     // Initial mount
+    // ANCHOR legacyCreateRootFromDOMContainer创建root
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate,
     );
     fiberRoot = root._internalRoot;
+    // ANCHOR 这里并没有调用callback,而是获取了fiberRoot,然后把callback的this指向fiberRoot
     if (typeof callback === 'function') {
       const originalCallback = callback;
       callback = function() {
@@ -203,6 +206,7 @@ function legacyRenderSubtreeIntoContainer(
       };
     }
     // Initial mount should not be batched.
+    // ANCHOR 如果是首次渲染(无root),会有一个批量调度流程unbatchedUpdates?
     unbatchedUpdates(() => {
       updateContainer(children, fiberRoot, parentComponent, callback);
     });
@@ -216,10 +220,12 @@ function legacyRenderSubtreeIntoContainer(
       };
     }
     // Update
+    // LINK 接下来就是updateContainer了
     updateContainer(children, fiberRoot, parentComponent, callback);
   }
   return getPublicRootInstance(fiberRoot);
 }
+// !SECTION
 
 export function findDOMNode(
   componentOrElement: Element | ?React$Component<any, any>,
@@ -247,10 +253,6 @@ export function findDOMNode(
   if ((componentOrElement: any).nodeType === ELEMENT_NODE) {
     return (componentOrElement: any);
   }
-  if (__DEV__) {
-    return findHostInstanceWithWarning(componentOrElement, 'findDOMNode');
-  }
-  return findHostInstance(componentOrElement);
 }
 
 export function hydrate(

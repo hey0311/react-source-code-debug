@@ -3074,7 +3074,6 @@ function remountFiber(
     );
   }
 }
-
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,

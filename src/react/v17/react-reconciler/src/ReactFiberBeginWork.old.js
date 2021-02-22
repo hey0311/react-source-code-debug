@@ -2985,7 +2985,7 @@ function updateScopeComponent(current, workInProgress, renderLanes) {
 export function markWorkInProgressReceivedUpdate() {
   didReceiveUpdate = true;
 }
-
+//SECTION bailoutOnAlreadyFinishedWork 
 function bailoutOnAlreadyFinishedWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -3000,10 +3000,11 @@ function bailoutOnAlreadyFinishedWork(
     // Don't update "base" render times for bailouts.
     stopProfilerTimerIfRunning(workInProgress);
   }
-
+  //ANCHOR 标记有跳过的更新
   markSkippedUpdateLanes(workInProgress.lanes);
 
   // Check if the children have any pending work.
+  //ANCHOR 如果子节点没有更新，返回null，终止遍历
   if (!includesSomeLane(renderLanes, workInProgress.childLanes)) {
     // The children don't have any work either. We can skip them.
     // TODO: Once we add back resuming, we should check if the children are
@@ -3012,10 +3013,12 @@ function bailoutOnAlreadyFinishedWork(
   } else {
     // This fiber doesn't have work, but its subtree does. Clone the child
     // fibers and continue.
+    //ANCHOR 子节点有更新，那么从current上复制子节点，并return出去
     cloneChildFibers(current, workInProgress);
     return workInProgress.child;
   }
 }
+//!SECTION
 
 function remountFiber(
   current: Fiber,
@@ -3079,12 +3082,13 @@ function remountFiber(
     );
   }
 }
-
+//SECTION beginWork
 function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
   renderLanes: Lanes,
 ): Fiber | null {
+  //ANCHOR 获取workInProgress.lanes，可通过判断它是否为空去判断该节点是否需要更新
   const updateLanes = workInProgress.lanes;
 
   if (__DEV__) {
@@ -3104,7 +3108,10 @@ function beginWork(
       );
     }
   }
-  if (current !== null) {
+  // 依据current是否存在判断当前是首次挂载还是后续的更新
+  // 如果是更新，先看优先级够不够，不够的话就能调用bailoutOnAlreadyFinishedWork
+  // 复用fiber节点来跳出对当前这个节点的处理了。
+  if (current !== null) {//ANCHOR IF更新流程
     const oldProps = current.memoizedProps;
     const newProps = workInProgress.pendingProps;
 
@@ -3293,6 +3300,7 @@ function beginWork(
           return updateOffscreenComponent(current, workInProgress, renderLanes);
         }
       }
+      //ANCHOR 拦截无需更新的节点,复用current树的节点
       return bailoutOnAlreadyFinishedWork(current, workInProgress, renderLanes);
     } else {
       if ((current.flags & ForceUpdateForLegacySuspense) !== NoFlags) {
@@ -3307,7 +3315,7 @@ function beginWork(
         didReceiveUpdate = false;
       }
     }
-  } else {
+  } else {//ANCHOR IF首次挂载
     didReceiveUpdate = false;
   }
 
@@ -3317,7 +3325,7 @@ function beginWork(
   // sometimes bails out later in the begin phase. This indicates that we should
   // move this assignment out of the common path and into each branch.
   workInProgress.lanes = NoLanes;
-
+  // ANCHOR 返回子节点,继续beginWork
   switch (workInProgress.tag) {
     case IndeterminateComponent: {
       return mountIndeterminateComponent(
@@ -3492,5 +3500,6 @@ function beginWork(
     workInProgress.tag,
   );
 }
+//!SECTION
 
 export {beginWork};

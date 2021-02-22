@@ -6,6 +6,7 @@
  *
  * @flow
  */
+//# fortest
 import * as React from './src/React'
 // Keep in sync with https://github.com/facebook/flow/blob/master/lib/react.js
 export type StatelessFunctionalComponent<

@@ -112,7 +112,7 @@ if (__DEV__) {
 }
 
 let debugCounter = 1;
-
+//LINK FiberNode对象
 function FiberNode(
   tag: WorkTag,
   pendingProps: mixed,

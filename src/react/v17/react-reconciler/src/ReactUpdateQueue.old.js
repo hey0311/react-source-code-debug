@@ -150,14 +150,15 @@ if (__DEV__) {
 }
 
 export function initializeUpdateQueue<State>(fiber: Fiber): void {
+  //LINK  UpdateQueue结构
   const queue: UpdateQueue<State> = {
-    baseState: fiber.memoizedState,
-    firstBaseUpdate: null,
-    lastBaseUpdate: null,
-    shared: {
-      pending: null,
+    baseState: fiber.memoizedState,//前一次更新计算得出的状态，它是第一个被跳过的update之前的那些update计算得出的state。会以它为基础计算本次的state
+    firstBaseUpdate: null,//前一次更新时updateQueue中第一个被跳过的update对象
+    lastBaseUpdate: null,//前一次更新中，updateQueue中以第一个被跳过的update为起点一直到的最后一个update截取的队列中的最后一个update。
+    shared: {//
+      pending: null,//存储着本次更新的update队列，是实际的updateQueue。shared的意思是current节点与workInProgress节点共享一条更新队列。
     },
-    effects: null,
+    effects: null,//数组。保存update.callback !== null的Update
   };
   fiber.updateQueue = queue;
 }
@@ -180,30 +181,34 @@ export function cloneUpdateQueue<State>(
     workInProgress.updateQueue = clone;
   }
 }
-
+//SECTION createUpdate
 export function createUpdate(eventTime: number, lane: Lane): Update<*> {
+  //LINK update对象结构
   const update: Update<*> = {
-    eventTime,
-    lane,
+    eventTime,//update的产生时间，若该update一直因为优先级不够而得不到执行，那么它会超时，会被立刻执行
+    lane,//update的优先级，即更新优先级
 
-    tag: UpdateState,
-    payload: null,
-    callback: null,
+    tag: UpdateState,//表示更新是哪种类型（UpdateState，ReplaceState，ForceUpdate，CaptureUpdate）
+    payload: null,//更新所携带的状态。 类组件中：有两种可能，对象（{}），和函数（(prevState, nextProps):newState => {}） 根组件中：是React.element，即ReactDOM.render的第一个参数
+    callback: null,//可理解为setState的回调
 
-    next: null,
+    next: null,//指向下一个update的指针
   };
   return update;
 }
-
+//!SECTION
+// SECTION enqueueUpdate将update排入队列
 export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
+  //ANCHOR 取出updateQueue,这是更新链表
   const updateQueue = fiber.updateQueue;
   if (updateQueue === null) {
     // Only occurs if the fiber has been unmounted.
     return;
   }
 
-  const sharedQueue: SharedQueue<State> = (updateQueue: any).shared;
+  const sharedQueue: SharedQueue<State> = (updateQueue: any).shared;//ANCHOR 这个sharedQueue是啥?
   const pending = sharedQueue.pending;
+  //ANCHOR 创建环装链表
   if (pending === null) {
     // This is the first update. Create a circular list.
     update.next = update;
@@ -228,6 +233,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
     }
   }
 }
+//!SECTION
 
 export function enqueueCapturedUpdate<State>(
   workInProgress: Fiber,

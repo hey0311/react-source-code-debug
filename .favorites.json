@@ -1,0 +1,27 @@
+[
+    {
+        "type": "Group",
+        "name": "123",
+        "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "hef5StEXMwiOW6T8"
+    },
+    {
+        "type": "File",
+        "name": "d:\\project1\\react-source-code-debug\\src\\react\\v17\\react-reconciler\\src\\ReactFiberReconciler.old.js",
+        "parent_id": null,
+        "fsPath": "d:\\project1\\react-source-code-debug\\src\\react\\v17\\react-reconciler\\src\\ReactFiberReconciler.old.js",
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "zSdTxaMlUgLVIXuk"
+    },
+    {
+        "type": "Group",
+        "name": "33",
+        "parent_id": null,
+        "workspaceRoot": null,
+        "workspacePath": null,
+        "id": "MN10iobmCD4P2Olj"
+    }
+]

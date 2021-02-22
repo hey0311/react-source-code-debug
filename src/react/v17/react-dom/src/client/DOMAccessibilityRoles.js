@@ -45,7 +45,7 @@ const tagToRoleMappings = {
   OUTPUT: 'status',
   PROGRESS: 'progressbar',
   // WARNING: Only with an accessible name
-  SECTION: 'region',
+  'SECTION': 'region',
   SUMMARY: 'button',
   TABLE: 'table',
   TBODY: 'rowgroup',
@@ -113,7 +113,6 @@ function getImplicitRole(element: Element): string | null {
       if (element.hasAttribute('multiple') || (element: any).size > 1) {
         return 'listbox';
       }
-      return 'combobox';
   }
 
   return null;
