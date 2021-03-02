@@ -647,7 +647,7 @@ function completeWork(
   workInProgress: Fiber,
   renderLanes: Lanes,
 ): Fiber | null {
-  const newProps = workInProgress.pendingProps;
+  const newProps = workInProgress.pendingProps;console.log('into completeWork',workInProgress.tag);
 
   switch (workInProgress.tag) {
     case IndeterminateComponent:
@@ -659,16 +659,16 @@ function completeWork(
     case Mode:
     case Profiler:
     case ContextConsumer:
-    case MemoComponent:
+    case MemoComponent:console.log('Function节点');
       return null;
     case ClassComponent: {
-      const Component = workInProgress.type;
+      const Component = workInProgress.type;console.log('class节点');
       if (isLegacyContextProvider(Component)) {
         popLegacyContext(workInProgress);
       }
       return null;
     }
-    case HostRoot: {
+    case HostRoot: {console.log('HostRoot节点');
       popHostContainer(workInProgress);
       popTopLevelLegacyContextObject(workInProgress);
       resetMutableSourceWorkInProgressVersions();
@@ -696,7 +696,7 @@ function completeWork(
       updateHostContainer(workInProgress);
       return null;
     }
-    case HostComponent: {
+    case HostComponent: {console.log('HostComponent节点');
       popHostContext(workInProgress);
       const rootContainerInstance = getRootHostContainer();
       const type = workInProgress.type;
@@ -779,7 +779,7 @@ function completeWork(
       }
       return null;
     }
-    case HostText: {
+    case HostText: {console.log('case HostText');
       const newText = newProps;
       if (current && workInProgress.stateNode != null) {
         const oldText = current.memoizedProps;
@@ -809,6 +809,7 @@ function completeWork(
             currentHostContext,
             workInProgress,
           );
+          console.log(workInProgress.stateNode);
         }
       }
       return null;

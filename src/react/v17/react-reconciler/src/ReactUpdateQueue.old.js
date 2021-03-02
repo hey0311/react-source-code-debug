@@ -216,7 +216,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
     update.next = pending.next;
     pending.next = update;
   }
-  sharedQueue.pending = update;
+  sharedQueue.pending = update;console.log('updateQueue',sharedQueue);console.log('updateQueue.shared.pending.next',updateQueue.shared.pending.next);
 
   if (__DEV__) {
     if (
@@ -402,7 +402,7 @@ export function processUpdateQueue<State>(
   props: any,
   instance: any,
   renderLanes: Lanes,
-): void {
+): void {console.log('processUpdateQueue');
   // This is always non-null on a ClassComponent or HostRoot
   const queue: UpdateQueue<State> = (workInProgress.updateQueue: any);
 

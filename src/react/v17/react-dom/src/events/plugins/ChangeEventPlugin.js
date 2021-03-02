@@ -70,13 +70,15 @@ let activeElement = null;
 let activeElementInst = null;
 
 /**
- * handle `change` event
+ * SECTION: handle `change` event
  */
 function shouldUseChangeEvent(elem) {
   const nodeName = elem.nodeName && elem.nodeName.toLowerCase();
   return (
     nodeName === 'select' ||
-    (nodeName === 'input' && (elem:}
+    (nodeName === 'input' && (elem: any).type === 'file')
+  );
+}
 
 function manualDispatchChangeEvent(nativeEvent) {
   const dispatchQueue = [];
@@ -119,7 +121,7 @@ function getTargetInstForChangeEvent(domEventName: DOMEventName, targetInst) {
 }
 
 /**
- * handle `input` event
+ * SECTION: handle `input` event
  */
 let isInputEventSupported = false;
 if (canUseDOM) {
@@ -215,7 +217,7 @@ function getTargetInstForInputEventPolyfill(
 }
 
 /**
- * handle `click` event
+ * SECTION: handle `click` event
  */
 function shouldUseClickEvent(elem) {
   // Use the `click` event to detect changes to checkbox and radio inputs.

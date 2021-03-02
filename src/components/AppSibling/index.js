@@ -4,7 +4,7 @@
  * Time: 11:22
  *
  */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './index.css'
 class Child2 extends React.Component {
   constructor() {
@@ -17,10 +17,10 @@ class Child2 extends React.Component {
     return null;
   }
   componentDidMount() {
-    this.setState({val: this.state.val + 1});
+    // this.setState({ val: this.state.val + 1 });
     // console.log(this.state.val);    // 第 1 次 log
 
-    this.setState({val: this.state.val + 1});
+    // this.setState({ val: this.state.val + 1 });
     // console.log(this.state.val);    // 第 2 次 log
 
     // setTimeout(() => {
@@ -32,21 +32,24 @@ class Child2 extends React.Component {
     // }, 0);
   }
   add = () => {
-    this.setState({val: 2});
-    this.setState({val: 6});
+    this.setState({ val: 2 });
+    this.setState({ val: 6 });
   }
   render() {
     const { countFormParent } = this.props
-    return <div className={'Child2'} onClick={this.add}>
+    return <div key="Child2 div" className={'Child2'} onClick={this.add}>
       {this.state.val}
     </div>
   }
 }
 
 const AppSibling = props => {
-  return <div className={'AppSibling'}>
-    <span className={'child1-span'}>Child1: {props.count}</span>
-    <Child2 countFormParent={props.count}/>
+  useEffect(() => {
+    console.log('Run AppSibling useEffect');
+  })
+  return <div key="AppSibling div" className={'AppSibling'}>
+    <span key="AppSibling span" className={'child1-span'}>Child1: {props.count}</span>
+    <Child2 key="Child2" countFormParent={props.count} />
   </div>
 }
 

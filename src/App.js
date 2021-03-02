@@ -20,17 +20,18 @@ import './App.css';
 }*/
 function App() {
 
+const [count,setCount]= useState(0)
   // 事件系统
   // return <EventDemo/>
 
   // return <Hooks/>
   // fiber树
-  // return (
-  //   <div className="App">
-  //     <span className={'app-span'} onClick={() => setCount(count + 1)}>App{count}</span>
-  //     <AppSibling count={count}/>
-  //   </div>
-  // );
+  return (
+    <div className="App" key="App">
+      <span key="app-span" className={'app-span'} onClick={() => setCount(count + 1)}>App{count}</span>
+      <AppSibling key="AppSibling" count={count}/>
+    </div>
+  );
 
   // Scheduler调度任务与用户交互
   // return <SchedulerTask/>
@@ -39,7 +40,7 @@ function App() {
   // return <TasksWithDifferentPriorities/>
 
   // context
-  return <ContextDemo/>
+  // return <ContextDemo/>
 
   // diff 算法
   // return <Diff ref={'diffRef'}/>

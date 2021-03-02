@@ -259,7 +259,7 @@ export function updateContainer(
   }
   const current = container.current;
   // ANCHOR 这个 requestEventTime是用做什么?
-  const eventTime = requestEventTime();
+  const eventTime = requestEventTime();console.log('eventTime',eventTime);
   if (__DEV__) {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
     if ('undefined' !== typeof jest) {
@@ -268,13 +268,13 @@ export function updateContainer(
     }
   }
   // ANCHOR 获取lane优先级 requestUpdateLane
-  const lane = requestUpdateLane(current);
+  const lane = requestUpdateLane(current);console.log('lane',lane);
 
   if (enableSchedulingProfiler) {
     markRenderScheduled(lane);// ANCHOR 这里做什么?
   }
 
-  const context = getContextForSubtree(parentComponent);// ANCHOR 获取上下文
+  const context = getContextForSubtree(parentComponent);console.log('context',context);
   if (container.context === null) {
     container.context = context;
   } else {
@@ -298,7 +298,7 @@ export function updateContainer(
     }
   }
   //ANCHOR createUpdate创建update对象
-  const update = createUpdate(eventTime, lane);
+  const update = createUpdate(eventTime, lane);console.log('update',update);
   // Caution: React DevTools currently depends on this property
   // being called "element".
   update.payload = {element};
@@ -317,7 +317,7 @@ export function updateContainer(
     update.callback = callback;
   }
 
-  enqueueUpdate(current, update);//ANCHOR enqueueUpdate
+  enqueueUpdate(current, update);
   scheduleUpdateOnFiber(current, lane, eventTime);//ANCHOR scheduleUpdateOnFiber
 
   return lane;

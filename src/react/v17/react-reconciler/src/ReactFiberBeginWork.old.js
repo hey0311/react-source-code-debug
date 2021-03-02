@@ -3087,7 +3087,7 @@ function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
   renderLanes: Lanes,
-): Fiber | null {
+): Fiber | null {console.log('beginWork',workInProgress.tag);
   //ANCHOR 获取workInProgress.lanes，可通过判断它是否为空去判断该节点是否需要更新
   const updateLanes = workInProgress.lanes;
 
@@ -3327,7 +3327,7 @@ function beginWork(
   workInProgress.lanes = NoLanes;
   // ANCHOR 返回子节点,继续beginWork
   switch (workInProgress.tag) {
-    case IndeterminateComponent: {
+    case IndeterminateComponent: {console.log('case IndeterminateComponent');
       return mountIndeterminateComponent(
         current,
         workInProgress,
@@ -3360,7 +3360,7 @@ function beginWork(
         renderLanes,
       );
     }
-    case ClassComponent: {
+    case ClassComponent: {console.log('case ClassComponent');
       const Component = workInProgress.type;
       const unresolvedProps = workInProgress.pendingProps;
       const resolvedProps =
@@ -3375,11 +3375,11 @@ function beginWork(
         renderLanes,
       );
     }
-    case HostRoot:
+    case HostRoot:console.log('case HostRoot');
       return updateHostRoot(current, workInProgress, renderLanes);
-    case HostComponent:
+    case HostComponent:console.log('case HostComponent');
       return updateHostComponent(current, workInProgress, renderLanes);
-    case HostText:
+    case HostText:console.log('case HostText');
       return updateHostText(current, workInProgress);
     case SuspenseComponent:
       return updateSuspenseComponent(current, workInProgress, renderLanes);
