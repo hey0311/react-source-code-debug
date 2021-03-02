@@ -52,6 +52,7 @@ import {
   Block,
   OffscreenComponent,
   LegacyHiddenComponent,
+  myTagMap,
 } from './ReactWorkTags';
 import {
   NoFlags,
@@ -3087,7 +3088,7 @@ function beginWork(
   current: Fiber | null,
   workInProgress: Fiber,
   renderLanes: Lanes,
-): Fiber | null {console.log('beginWork',workInProgress.tag);
+): Fiber | null {window.log('beginWork start');window.log('tag:',myTagMap[ workInProgress.tag],',key:',workInProgress.key)
   //ANCHOR 获取workInProgress.lanes，可通过判断它是否为空去判断该节点是否需要更新
   const updateLanes = workInProgress.lanes;
 
@@ -3327,23 +3328,23 @@ function beginWork(
   workInProgress.lanes = NoLanes;
   // ANCHOR 返回子节点,继续beginWork
   switch (workInProgress.tag) {
-    case IndeterminateComponent: {console.log('case IndeterminateComponent');
-      return mountIndeterminateComponent(
+    case IndeterminateComponent: {
+      const result = mountIndeterminateComponent(
         current,
         workInProgress,
         workInProgress.type,
         renderLanes,
-      );
+      );window.log('beginWork end');return result;
     }
     case LazyComponent: {
       const elementType = workInProgress.elementType;
-      return mountLazyComponent(
+      const result = mountLazyComponent(
         current,
         workInProgress,
         elementType,
         updateLanes,
         renderLanes,
-      );
+      );window.log('beginWork end');return result;
     }
     case FunctionComponent: {
       const Component = workInProgress.type;
@@ -3352,39 +3353,39 @@ function beginWork(
         workInProgress.elementType === Component
           ? unresolvedProps
           : resolveDefaultProps(Component, unresolvedProps);
-      return updateFunctionComponent(
+      const result=updateFunctionComponent(
         current,
         workInProgress,
         Component,
         resolvedProps,
         renderLanes,
-      );
+      );window.log('beginWork end');return result;
     }
-    case ClassComponent: {console.log('case ClassComponent');
+    case ClassComponent: {
       const Component = workInProgress.type;
       const unresolvedProps = workInProgress.pendingProps;
       const resolvedProps =
         workInProgress.elementType === Component
           ? unresolvedProps
           : resolveDefaultProps(Component, unresolvedProps);
-      return updateClassComponent(
+      const result=updateClassComponent(
         current,
         workInProgress,
         Component,
         resolvedProps,
         renderLanes,
-      );
+      );window.log('beginWork end');return result;
     }
-    case HostRoot:console.log('case HostRoot');
-      return updateHostRoot(current, workInProgress, renderLanes);
-    case HostComponent:console.log('case HostComponent');
-      return updateHostComponent(current, workInProgress, renderLanes);
-    case HostText:console.log('case HostText');
-      return updateHostText(current, workInProgress);
+    case HostRoot:
+      const result = updateHostRoot(current, workInProgress, renderLanes);window.log('beginWork end');return result;
+    case HostComponent:
+      const result1=updateHostComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result1;
+    case HostText:
+      const result2=updateHostText(current, workInProgress);window.log('HostText值:',workInProgress.stateNode);window.log('beginWork end');return result2;
     case SuspenseComponent:
-      return updateSuspenseComponent(current, workInProgress, renderLanes);
+      const result3=updateSuspenseComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result3;
     case HostPortal:
-      return updatePortalComponent(current, workInProgress, renderLanes);
+      const result4=updatePortalComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result4;
     case ForwardRef: {
       const type = workInProgress.type;
       const unresolvedProps = workInProgress.pendingProps;
@@ -3392,24 +3393,24 @@ function beginWork(
         workInProgress.elementType === type
           ? unresolvedProps
           : resolveDefaultProps(type, unresolvedProps);
-      return updateForwardRef(
+      const result5=updateForwardRef(
         current,
         workInProgress,
         type,
         resolvedProps,
         renderLanes,
-      );
+      );window.log('beginWork end');return result5;
     }
     case Fragment:
-      return updateFragment(current, workInProgress, renderLanes);
+      const result6=updateFragment(current, workInProgress, renderLanes);window.log('beginWork end');return result6;
     case Mode:
-      return updateMode(current, workInProgress, renderLanes);
+      const result7=updateMode(current, workInProgress, renderLanes);window.log('beginWork end');return result7;
     case Profiler:
-      return updateProfiler(current, workInProgress, renderLanes);
+      const result8=updateProfiler(current, workInProgress, renderLanes);window.log('beginWork end');return result8;
     case ContextProvider:
-      return updateContextProvider(current, workInProgress, renderLanes);
+      const result9=updateContextProvider(current, workInProgress, renderLanes);window.log('beginWork end');return result9;
     case ContextConsumer:
-      return updateContextConsumer(current, workInProgress, renderLanes);
+      const result10=updateContextConsumer(current, workInProgress, renderLanes);window.log('beginWork end');return result10;
     case MemoComponent: {
       const type = workInProgress.type;
       const unresolvedProps = workInProgress.pendingProps;
@@ -3429,24 +3430,24 @@ function beginWork(
         }
       }
       resolvedProps = resolveDefaultProps(type.type, resolvedProps);
-      return updateMemoComponent(
+      const result11=updateMemoComponent(
         current,
         workInProgress,
         type,
         resolvedProps,
         updateLanes,
         renderLanes,
-      );
+      );window.log('beginWork end');return result11;
     }
     case SimpleMemoComponent: {
-      return updateSimpleMemoComponent(
+      const result12=updateSimpleMemoComponent(
         current,
         workInProgress,
         workInProgress.type,
         workInProgress.pendingProps,
         updateLanes,
         renderLanes,
-      );
+      );window.log('beginWork end');return result12;
     }
     case IncompleteClassComponent: {
       const Component = workInProgress.type;
@@ -3455,26 +3456,26 @@ function beginWork(
         workInProgress.elementType === Component
           ? unresolvedProps
           : resolveDefaultProps(Component, unresolvedProps);
-      return mountIncompleteClassComponent(
+      const result13=mountIncompleteClassComponent(
         current,
         workInProgress,
         Component,
         resolvedProps,
         renderLanes,
-      );
+      );window.log('beginWork end');return result13;
     }
     case SuspenseListComponent: {
-      return updateSuspenseListComponent(current, workInProgress, renderLanes);
+      const result=updateSuspenseListComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result;
     }
     case FundamentalComponent: {
       if (enableFundamentalAPI) {
-        return updateFundamentalComponent(current, workInProgress, renderLanes);
+        const result14=updateFundamentalComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result14;
       }
       break;
     }
     case ScopeComponent: {
       if (enableScopeAPI) {
-        return updateScopeComponent(current, workInProgress, renderLanes);
+        const result15=updateScopeComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result15;
       }
       break;
     }
@@ -3482,15 +3483,15 @@ function beginWork(
       if (enableBlocksAPI) {
         const block = workInProgress.type;
         const props = workInProgress.pendingProps;
-        return updateBlock(current, workInProgress, block, props, renderLanes);
+        const result16=updateBlock(current, workInProgress, block, props, renderLanes);window.log('beginWork end');return result16;
       }
       break;
     }
     case OffscreenComponent: {
-      return updateOffscreenComponent(current, workInProgress, renderLanes);
+      const result17=updateOffscreenComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result17;
     }
     case LegacyHiddenComponent: {
-      return updateLegacyHiddenComponent(current, workInProgress, renderLanes);
+      const result18=updateLegacyHiddenComponent(current, workInProgress, renderLanes);window.log('beginWork end');return result18;
     }
   }
   invariant(

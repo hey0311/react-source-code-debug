@@ -34,7 +34,16 @@ export type Interaction = {
   timestamp: number,
   ...
 };
-
+window.log = function(...args){
+  if(args[0].length>6 && args[0].slice(-5)==='start'){
+    console.group(args[0].slice(0,-6));
+    return
+  }else if(args[0].length>4 && args[0].slice(-3)==='end'){
+    console.groupEnd(args[0].slice(0,-4));
+    return
+  }
+  console.log(...args);
+}
 // Export all exports so that they're available in tests.
 // We can't use export * from in Flow for some reason.
 export {

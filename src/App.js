@@ -27,9 +27,9 @@ const [count,setCount]= useState(0)
   // return <Hooks/>
   // fiber树
   return (
-    <div className="App" key="App">
-      <span key="app-span" className={'app-span'} onClick={() => setCount(count + 1)}>App{count}</span>
-      <AppSibling key="AppSibling" count={count}/>
+    <div className="App" key="1-App">
+      <span key="AppChild1" className={'app-span'} onClick={() => setCount(count + 1)}>App{count}</span>
+      <AppSibling key="AppChild2(Fn)" count={count}/>
     </div>
   );
 

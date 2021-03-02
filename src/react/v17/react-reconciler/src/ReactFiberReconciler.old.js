@@ -253,13 +253,13 @@ export function updateContainer(
   container: OpaqueRoot,
   parentComponent: ?React$Component<any, any>,
   callback: ?Function,
-): Lane {
+): Lane {window.log('updateContainer start',this)
   if (__DEV__) {
     onScheduleRoot(container, element);
   }
   const current = container.current;
   // ANCHOR 这个 requestEventTime是用做什么?
-  const eventTime = requestEventTime();console.log('eventTime',eventTime);
+  const eventTime = requestEventTime();window.log('计算eventTime',eventTime);
   if (__DEV__) {
     // $FlowExpectedError - jest isn't a global, and isn't recognized outside of tests
     if ('undefined' !== typeof jest) {
@@ -268,7 +268,7 @@ export function updateContainer(
     }
   }
   // ANCHOR 获取lane优先级 requestUpdateLane
-  const lane = requestUpdateLane(current);console.log('lane',lane);
+  const lane = requestUpdateLane(current);window.log('计算lane',lane);
 
   if (enableSchedulingProfiler) {
     markRenderScheduled(lane);// ANCHOR 这里做什么?
@@ -320,7 +320,7 @@ export function updateContainer(
   enqueueUpdate(current, update);
   scheduleUpdateOnFiber(current, lane, eventTime);//ANCHOR scheduleUpdateOnFiber
 
-  return lane;
+  window.log('updateContainer end');return lane;
 }
 //!SECTION
 

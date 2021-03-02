@@ -59,3 +59,31 @@ export const ScopeComponent = 21;
 export const Block = 22;
 export const OffscreenComponent = 23;
 export const LegacyHiddenComponent = 24;
+
+export const myTagMap = {
+  0:'FunctionComponent',
+  1:'ClassComponent',
+  2:'IndeterminateComponent',
+  3:'HostRoot',
+  4:'HostPortal',
+  5:'HostComponent',
+  6:'HostText ',
+  7:'Fragment ',
+  8:'Mode ',
+  9:'ContextConsumer ',
+  10:'ContextProvider ',
+  11:'ForwardRef ',
+  12:'Profiler ',
+  13:'SuspenseComponent ',
+  14:'MemoComponent ',
+  15:'SimpleMemoComponent ',
+  16:'LazyComponent ',
+  17:'IncompleteClassComponent ',
+  18:'DehydratedFragment ',
+  19:'SuspenseListComponent ',
+  20:'FundamentalComponent ',
+  21:'ScopeComponent ',
+  22:'Block ',
+  23:'OffscreenComponent ',
+  24:'LegacyHiddenComponent ',
+}

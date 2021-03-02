@@ -57,6 +57,7 @@ import {
   Block,
   OffscreenComponent,
   LegacyHiddenComponent,
+  myTagMap,
 } from './ReactWorkTags';
 import {NoMode, BlockingMode, ProfileMode} from './ReactTypeOfMode';
 import {Ref, Update, NoFlags, DidCapture, Snapshot} from './ReactFiberFlags';
@@ -646,8 +647,8 @@ function completeWork(
   current: Fiber | null,
   workInProgress: Fiber,
   renderLanes: Lanes,
-): Fiber | null {
-  const newProps = workInProgress.pendingProps;console.log('into completeWork',workInProgress.tag);
+): Fiber | null {window.log('completeWork start');window.log('tag:',myTagMap[ workInProgress.tag],',key:',workInProgress.key)
+  const newProps = workInProgress.pendingProps;
 
   switch (workInProgress.tag) {
     case IndeterminateComponent:
@@ -659,16 +660,16 @@ function completeWork(
     case Mode:
     case Profiler:
     case ContextConsumer:
-    case MemoComponent:console.log('Function节点');
+    case MemoComponent:window.log('completeWork end')
       return null;
     case ClassComponent: {
-      const Component = workInProgress.type;console.log('class节点');
+      const Component = workInProgress.type;
       if (isLegacyContextProvider(Component)) {
         popLegacyContext(workInProgress);
-      }
+      }window.log('completeWork end')
       return null;
     }
-    case HostRoot: {console.log('HostRoot节点');
+    case HostRoot: {
       popHostContainer(workInProgress);
       popTopLevelLegacyContextObject(workInProgress);
       resetMutableSourceWorkInProgressVersions();
@@ -693,10 +694,10 @@ function completeWork(
           workInProgress.flags |= Snapshot;
         }
       }
-      updateHostContainer(workInProgress);
+      updateHostContainer(workInProgress);window.log('completeWork end')
       return null;
     }
-    case HostComponent: {console.log('HostComponent节点');
+    case HostComponent: {
       popHostContext(workInProgress);
       const rootContainerInstance = getRootHostContainer();
       const type = workInProgress.type;
@@ -718,7 +719,7 @@ function completeWork(
             workInProgress.stateNode !== null,
             'We must have new props for new mounts. This error is likely ' +
               'caused by a bug in React. Please file an issue.',
-          );
+          );window.log('completeWork end')
           // This can happen when we abort work.
           return null;
         }
@@ -776,10 +777,10 @@ function completeWork(
           // If there is a ref on a host node we need to schedule a callback
           markRef(workInProgress);
         }
-      }
+      }window.log('completeWork end')
       return null;
     }
-    case HostText: {console.log('case HostText');
+    case HostText: {
       const newText = newProps;
       if (current && workInProgress.stateNode != null) {
         const oldText = current.memoizedProps;
@@ -808,10 +809,9 @@ function completeWork(
             rootContainerInstance,
             currentHostContext,
             workInProgress,
-          );
-          console.log(workInProgress.stateNode);
+          );window.log('HostText值:',workInProgress.stateNode);
         }
-      }
+      }window.log('completeWork end')
       return null;
     }
     case SuspenseComponent: {
@@ -830,7 +830,7 @@ function completeWork(
             prepareToHydrateHostSuspenseInstance(workInProgress);
             if (enableSchedulerTracing) {
               markSpawnedWork(OffscreenLane);
-            }
+            }window.log('completeWork end')
             return null;
           } else {
             // We should never have been in a hydration state if we didn't have a current.
@@ -846,7 +846,7 @@ function completeWork(
             // It's also a signal to replay events and the suspense callback.
             // If something suspended, schedule an effect to attach retry listeners.
             // So we might as well always mark this.
-            workInProgress.flags |= Update;
+            workInProgress.flags |= Update;window.log('completeWork end')
             return null;
           }
         }
@@ -861,7 +861,7 @@ function completeWork(
           (workInProgress.mode & ProfileMode) !== NoMode
         ) {
           transferActualDuration(workInProgress);
-        }
+        }window.log('completeWork end')
         return workInProgress;
       }
 
@@ -938,7 +938,7 @@ function completeWork(
       ) {
         // Always notify the callback
         workInProgress.flags |= Update;
-      }
+      }window.log('completeWork end')
       return null;
     }
     case HostPortal:
@@ -946,11 +946,11 @@ function completeWork(
       updateHostContainer(workInProgress);
       if (current === null) {
         preparePortalMount(workInProgress.stateNode.containerInfo);
-      }
+      }window.log('completeWork end')
       return null;
     case ContextProvider:
       // Pop provider fiber
-      popProvider(workInProgress);
+      popProvider(workInProgress);window.log('completeWork end')
       return null;
     case IncompleteClassComponent: {
       // Same as class component case. I put it down here so that the tags are
@@ -958,7 +958,7 @@ function completeWork(
       const Component = workInProgress.type;
       if (isLegacyContextProvider(Component)) {
         popLegacyContext(workInProgress);
-      }
+      }window.log('completeWork end')
       return null;
     }
     case SuspenseListComponent: {
@@ -967,7 +967,7 @@ function completeWork(
       const renderState: null | SuspenseListRenderState =
         workInProgress.memoizedState;
 
-      if (renderState === null) {
+      if (renderState === null) {window.log('completeWork end')
         // We're running in the default, "independent" mode.
         // We don't do anything in this mode.
         return null;
@@ -1038,7 +1038,7 @@ function completeWork(
                     suspenseStackCursor.current,
                     ForceSuspenseFallback,
                   ),
-                );
+                );window.log('completeWork end')
                 return workInProgress.child;
               }
               row = row.sibling;
@@ -1103,7 +1103,7 @@ function completeWork(
               // Remove any effects that were appended after this point.
               if (lastEffect !== null) {
                 lastEffect.nextEffect = null;
-              }
+              }window.log('completeWork end')
               // We're done.
               return null;
             }
@@ -1181,7 +1181,7 @@ function completeWork(
         pushSuspenseContext(workInProgress, suspenseContext);
         // Do a pass over the next row.
         return next;
-      }
+      }window.log('completeWork end')
       return null;
     }
     case FundamentalComponent: {
@@ -1230,7 +1230,7 @@ function completeWork(
           if (shouldUpdate) {
             markUpdate(workInProgress);
           }
-        }
+        }window.log('completeWork end')
         return null;
       }
       break;
@@ -1252,7 +1252,7 @@ function completeWork(
           if (current.ref !== workInProgress.ref) {
             markRef(workInProgress);
           }
-        }
+        }window.log('completeWork end')
         return null;
       }
       break;
@@ -1277,7 +1277,7 @@ function completeWork(
         ) {
           workInProgress.flags |= Update;
         }
-      }
+      }window.log('completeWork end')
       return null;
     }
   }

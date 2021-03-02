@@ -182,7 +182,7 @@ export function cloneUpdateQueue<State>(
   }
 }
 //SECTION createUpdate
-export function createUpdate(eventTime: number, lane: Lane): Update<*> {
+export function createUpdate(eventTime: number, lane: Lane): Update<*> {window.log('createUpdate start')
   //LINK update对象结构
   const update: Update<*> = {
     eventTime,//update的产生时间，若该update一直因为优先级不够而得不到执行，那么它会超时，会被立刻执行
@@ -193,7 +193,7 @@ export function createUpdate(eventTime: number, lane: Lane): Update<*> {
     callback: null,//可理解为setState的回调
 
     next: null,//指向下一个update的指针
-  };
+  };window.log('创建update对象',update);window.log('createUpdate end')
   return update;
 }
 //!SECTION

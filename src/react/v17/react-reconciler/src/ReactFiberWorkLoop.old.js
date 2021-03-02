@@ -1729,7 +1729,6 @@ function renderRootConcurrent(root: FiberRoot, lanes: Lanes) {
 function workLoopConcurrent() {
     // Perform work until Scheduler asks us to yield
     while (workInProgress !== null && !shouldYield()) {
-        console.log('执行performUnitOfWork', workInProgress, shouldYield());
         performUnitOfWork(workInProgress);
     }
 }
@@ -1758,15 +1757,14 @@ function performUnitOfWork(unitOfWork: Fiber): void {
         //LINK completeUnitOfWork
         completeUnitOfWork(unitOfWork);
     } else {
-        workInProgress = next; console.log('设置WIP为beginWork返回的next', next);
+        workInProgress = next; 
     }
 
     ReactCurrentOwner.current = null;
 }
 //!SECTION
 //SECTION completeUnitOfWork
-function completeUnitOfWork(unitOfWork: Fiber): void {
-    console.log('into completeUnitOfWork');
+function completeUnitOfWork(unitOfWork: Fiber): void {window.log('completeUnitOfWork start')
     // Attempt to complete the current unit of work, then move to the next
     // sibling. If there are no more siblings, return to the parent fiber.
     let completedWork = unitOfWork;
@@ -1774,12 +1772,11 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
         // The current, flushed, state of this fiber is the alternate. Ideally
         // nothing should rely on this, but relying on it here means that we don't
         // need an additional field on the work in progress.
-        const current = completedWork.alternate; console.log('complete WIP', workInProgress);
+        const current = completedWork.alternate; 
         const returnFiber = completedWork.return;
 
         // Check if the work completed or if something threw.
         if ((completedWork.flags & Incomplete) === NoFlags) {
-            console.log('incomplete');
             setCurrentDebugFiberInDEV(completedWork);
             let next;
             if (
@@ -1845,7 +1842,7 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
             // This fiber did not complete because something threw. Pop values off
             // the stack without entering the complete phase. If this is a boundary,
             // capture values if possible.
-            const next = unwindWork(completedWork, subtreeRenderLanes); console.log('unwindWork');
+            const next = unwindWork(completedWork, subtreeRenderLanes); 
 
             // Because this fiber did not complete, don't reset its expiration time.
 
@@ -1886,11 +1883,11 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
         const siblingFiber = completedWork.sibling;
         if (siblingFiber !== null) {
             // If there is more work to do in this returnFiber, do that next.
-            workInProgress = siblingFiber;
+            workInProgress = siblingFiber;window.log('completeUnitOfWork end')
             return;
         }
         // Otherwise, return to the parent
-        completedWork = returnFiber; console.log('completedWork', completedWork);
+        completedWork = returnFiber; 
         // Update the next thing we're working on in case something throws.
         workInProgress = completedWork;
     } while (completedWork !== null);
@@ -1898,7 +1895,7 @@ function completeUnitOfWork(unitOfWork: Fiber): void {
     // We've reached the root.
     if (workInProgressRootExitStatus === RootIncomplete) {
         workInProgressRootExitStatus = RootCompleted;
-    }
+    };window.log('completeUnitOfWork end')
 }
 //!SECTION
 
