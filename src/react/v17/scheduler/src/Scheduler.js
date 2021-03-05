@@ -125,7 +125,7 @@ function handleTimeout(currentTime) {
   }
 }
 
-function flushWork(hasTimeRemaining, initialTime) {
+function flushWork(hasTimeRemaining, initialTime) {window.log('flushWork start')
   if (enableProfiling) {
     markSchedulerUnsuspended(initialTime);
   }
@@ -143,7 +143,7 @@ function flushWork(hasTimeRemaining, initialTime) {
   try {
     if (enableProfiling) {
       try {
-        return workLoop(hasTimeRemaining, initialTime);
+        const a = workLoop(hasTimeRemaining, initialTime);window.log('flushWork end');return a;
       } catch (error) {
         if (currentTask !== null) {
           const currentTime = getCurrentTime();
@@ -154,7 +154,7 @@ function flushWork(hasTimeRemaining, initialTime) {
       }
     } else {
       // No catch in prod code path.
-      return workLoop(hasTimeRemaining, initialTime);
+      const a = workLoop(hasTimeRemaining, initialTime);window.log('flushWork end');return a;
     }
   } finally {
     currentTask = null;
@@ -163,11 +163,11 @@ function flushWork(hasTimeRemaining, initialTime) {
     if (enableProfiling) {
       const currentTime = getCurrentTime();
       markSchedulerSuspended(currentTime);
-    }
+    }window.log('flushWork end')
   }
 }
 
-function workLoop(hasTimeRemaining, initialTime) {
+function workLoop(hasTimeRemaining, initialTime) {window.log('workLoop start')
   let currentTime = initialTime;
   advanceTimers(currentTime);
   // 获取taskQueue中最紧急的任务
@@ -222,13 +222,13 @@ function workLoop(hasTimeRemaining, initialTime) {
   // 高优先级任务完成后，currentTask.callback为null，任务从taskQueue中删除，此时队列中还有低优先级任务，
   // currentTask = peek(taskQueue)  currentTask不为空，说明还有任务，继续postMessage执行workLoop，但它被取消过，导致currentTask.callback为null
   // 所以会被删除，此时的taskQueue为空，低优先级的任务重新调度，加入taskQueue
-  if (currentTask !== null) {
+  if (currentTask !== null) {window.log('workLoop end')
     return true;
   } else {
     const firstTimer = peek(timerQueue);
     if (firstTimer !== null) {
       requestHostTimeout(handleTimeout, firstTimer.startTime - currentTime);
-    }
+    }window.log('workLoop end')
     return false;
   }
 }
@@ -295,7 +295,7 @@ function unstable_wrapCallback(callback) {
   };
 }
 
-function unstable_scheduleCallback(priorityLevel, callback, options) {
+function unstable_scheduleCallback(priorityLevel, callback, options) {window.log('scheduleCallback start')
   var currentTime = getCurrentTime();
   // 确定当前时间 startTime 和延迟更新时间 timeout
   var startTime;
@@ -351,7 +351,7 @@ function unstable_scheduleCallback(priorityLevel, callback, options) {
   // 如果是延迟任务则将 newTask 放入延迟调度队列（timerQueue）并执行 requestHostTimeout
   // 如果是正常任务则将 newTask 放入正常调度队列（taskQueue）并执行 requestHostCallback
 
-  if (startTime > currentTime) {
+  if (startTime > currentTime) {window.log('任务压入异步队列 start')
     // This is a delayed task.
     newTask.sortIndex = startTime;
     push(timerQueue, newTask);
@@ -367,8 +367,8 @@ function unstable_scheduleCallback(priorityLevel, callback, options) {
       // 会把handleTimeout放到setTimeout里，在startTime - currentTime时间之后执行
       // 待会再调度
       requestHostTimeout(handleTimeout, startTime - currentTime);
-    }
-  } else {
+    }window.log('任务压入异步队列 end')
+  } else {window.log('任务压入同步队列 start')
     newTask.sortIndex = expirationTime;
     // taskQueue是最小堆，而堆内又是根据sortIndex（也就是expirationTime）进行排序的。
     // 可以保证优先级最高（expirationTime最小）的任务排在前面被优先处理。
@@ -384,8 +384,8 @@ function unstable_scheduleCallback(priorityLevel, callback, options) {
     if (!isHostCallbackScheduled && !isPerformingWork) {
       isHostCallbackScheduled = true;
       requestHostCallback(flushWork);
-    }
-  }
+    }window.log('任务压入同步队列 end')
+  }window.log('scheduleCallback end')
 
   return newTask;
 }

@@ -182,7 +182,7 @@ if (
     }
   };
 
-  const performWorkUntilDeadline = () => {
+  const performWorkUntilDeadline = () => {window.log('performWorkUntilDeadline start')
     if (scheduledHostCallback !== null) {
       const currentTime = getCurrentTime();
       // Yield after `yieldInterval` ms, regardless of where we are in the vsync
@@ -207,7 +207,7 @@ if (
       } catch (error) {
         // If a scheduler task throws, exit the current browser task so the
         // error can be observed.
-        port.postMessage(null);
+        port.postMessage(null);window.log('performWorkUntilDeadline end')
         throw error;
       }
     } else {
@@ -215,19 +215,19 @@ if (
     }
     // Yielding to the browser will give it a chance to paint, so we can
     // reset this.
-    needsPaint = false;
+    needsPaint = false;window.log('performWorkUntilDeadline end')
   };
 
   const channel = new MessageChannel();
   const port = channel.port2;
   channel.port1.onmessage = performWorkUntilDeadline;
 
-  requestHostCallback = function(callback) {
+  requestHostCallback = function(callback) {window.log('requestHostCallback start')
     scheduledHostCallback = callback;
     if (!isMessageLoopRunning) {
       isMessageLoopRunning = true;
       port.postMessage(null);
-    }
+    }window.log('requestHostCallback end')
   };
 
   cancelHostCallback = function() {

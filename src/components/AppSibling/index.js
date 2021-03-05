@@ -33,12 +33,12 @@ class Child2 extends React.Component {
   }
   add = () => {
     this.setState({ val: 2 });
-    this.setState({ val: 6 });
+    // this.setState({ val: 6 });
   }
   render() {
     const { countFormParent } = this.props
-    return <div key="grandson div" className={'Child2'} onClick={this.add}>
-      {this.state.val}
+    return <div key="child2-div" className={'Child2'} onClick={this.add}>
+      child2-content:{this.state.val}
     </div>
   }
 }
@@ -47,9 +47,9 @@ const AppSibling = props => {
   useEffect(() => {
     console.log('Run AppSibling useEffect');
   })
-  return <div key="AppChild2 div" className={'AppSibling'}>
-    <span key="grandson1" className={'child1-span'}>Child1: {props.count}</span>
-    <Child2 key="grandson2" countFormParent={props.count} />
+  return <div key="child1-div" className={'AppSibling'}>
+    <span key="child1-span" className={'child1-span'}>child1-span: {props.count}</span>
+    <Child2 key="ClassChild2" countFormParent={props.count} />
   </div>
 }
 

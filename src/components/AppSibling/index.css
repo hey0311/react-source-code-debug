@@ -7,27 +7,30 @@
   align-items: flex-start;
   justify-content: space-around;
   padding-top: 80px;
+  text-align: left;
 }
 .AppSibling > span {
   cursor: pointer;
 }
 .AppSibling:before {
-  content: 'AppSibling';
+  content: 'FnChild1(div)';
   font-size: 20px;
   position: absolute;
   top: 0;
-  left: 25%;
+  /* left: 25%; */
+  left:0;
 }
 .Child2:before {
-  content: 'Child2';
+  content: 'ClassChild2(div)';
   font-size: 20px;
   position: absolute;
   top: 0;
-  left: -240%;
+  /* left: -240%; */
+  left: 0;
 }
 .Child2 {
   position: relative;
   margin-left: 60px;
-  padding-top: 40px;
-
+  padding-top: 70px;
+  width: 200px;
 }

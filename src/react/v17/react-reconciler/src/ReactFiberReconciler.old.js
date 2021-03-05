@@ -298,7 +298,7 @@ export function updateContainer(
     }
   }
   //ANCHOR createUpdate创建update对象
-  const update = createUpdate(eventTime, lane);console.log('update',update);
+  const update = createUpdate(eventTime, lane);
   // Caution: React DevTools currently depends on this property
   // being called "element".
   update.payload = {element};

@@ -1112,7 +1112,7 @@ function updateMutableSource<Source, Snapshot>(
 
 function mountState<S>(
   initialState: (() => S) | S,
-): [S, Dispatch<BasicStateAction<S>>] {
+): [S, Dispatch<BasicStateAction<S>>] {window.log('mountState start')
   const hook = mountWorkInProgressHook();
   if (typeof initialState === 'function') {
     // $FlowFixMe: Flow doesn't like mixed types
@@ -1131,7 +1131,7 @@ function mountState<S>(
     null,
     currentlyRenderingFiber,
     queue,
-  ): any));
+  ): any));window.log('mountState end')
   return [hook.memoizedState, dispatch];
 }
 

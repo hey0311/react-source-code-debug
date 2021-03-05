@@ -198,7 +198,7 @@ export function createUpdate(eventTime: number, lane: Lane): Update<*> {window.l
 }
 //!SECTION
 // SECTION enqueueUpdate将update排入队列
-export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
+export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {window.log('enqueueUpdate start');
   //ANCHOR 取出updateQueue,这是更新链表
   const updateQueue = fiber.updateQueue;
   if (updateQueue === null) {
@@ -216,7 +216,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
     update.next = pending.next;
     pending.next = update;
   }
-  sharedQueue.pending = update;console.log('updateQueue',sharedQueue);console.log('updateQueue.shared.pending.next',updateQueue.shared.pending.next);
+  sharedQueue.pending = update;window.log('updateQueue:',sharedQueue,'updateQueue.shared.pending.next:',updateQueue.shared.pending.next);
 
   if (__DEV__) {
     if (
@@ -231,7 +231,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
       );
       didWarnUpdateInsideUpdate = true;
     }
-  }
+  };window.log('enqueueUpdate end')
 }
 //!SECTION
 

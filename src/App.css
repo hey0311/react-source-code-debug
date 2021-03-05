@@ -6,10 +6,9 @@
   font-size: 20px;
   position: absolute;
   top: 20px;
-  left: 30%;
-} {
-
-}
+  /* left: 30%; */
+  left: 0;
+} 
 .App {
   text-align: center;
   width: 500px;
@@ -21,11 +20,12 @@
   position: relative;
 }
 .App:before {
-  content: 'FiberApp';
+  content: 'FnApp(div)';
   font-size: 20px;
   position: absolute;
   top: 20px;
-  left: 30%;
+  /* left: 30%; */
+  left:0;
 }
 
 
